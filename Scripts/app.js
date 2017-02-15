@@ -5,6 +5,53 @@
 // IIFE
 (function(){ 
 
+let mainNav = document.getElementById("mainNav");
+    let navbarHTML;
+
+    //STEP 1 - Create an XHR object
+    let navXHR = new XMLHttpRequest();
+
+    //Step 2 - Open a file
+    navXHR.open("GET","../navbar.html", true);
+
+    //STEP 3 - Send the XMLHttpRequest
+    navXHR.send();
+
+    //STEP 4 - Listen for readystate of 4 and server status of 200 on readystatechange
+    navXHR.onreadystatechange = function() {
+
+        if((this.readyState === 4) && (this.status === 200)){
+            //read the data
+            navbarHTML = this.responseText;
+        }
+
+    };
+
+    //STEP 5 - wait until the navbar file has finished loading
+    navXHR.addEventListener("load", function(){
+
+        mainNav.innerHTML = navbarHTML;
+
+        switch(document.title) {
+
+            case "Home":
+                let homeLink = document.getElementById("homeLink");
+                homeLink.setAttribute("class", "active");
+            break;
+
+            case "Projects":
+                let projectLink = document.getElementById("projectsLink");
+                projectLink.setAttribute("class", "active");
+            break;
+
+            case "Contact":
+                let contactLink = document.getElementById("contactLink");
+                contactLink.setAttribute("class", "active");
+            break;
+        }
+
+    });
+
 
 switch (document.title) {
 
@@ -17,10 +64,12 @@ case "Home":
 
     //STEP 2 - Open the JSON file
     //arguments - GET/POST, URL, Async (True or False)
+    // GET is for non sensitive data, POST is more secure but slower
     XHR.open("GET", "../games.json", true);
 
     //STEP 3 - Initiate the call (send out a call to the XHR object)
     //you can also add a filter if you are looking for a particular document
+    //for example, you could do "games". If it doesn't match anything in the document it will not filter
     XHR.send(null);
 
     //Step 4 - Listen for ready state for be 4
