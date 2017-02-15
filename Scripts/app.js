@@ -5,42 +5,53 @@
 // IIFE
 (function(){ 
 
-let data = {
-
-"games": [
-    {
-        "name": "Fallout 4",
-        "cost": 69.99,
-        "rating": 4.3
-    },
-    {
-        "name": "Overwatch",
-        "cost": 49.99,
-        "rating": 4.5
-    },
-    {
-        "name": "Horizon Zero Dawn",
-        "cost": 69.99,
-        "rating": 4.1
-    }
- 
-]
-};
-
 
 switch (document.title) {
 
 case "Home":
 
-    //created a hook into our UI into back end JS
+    let data;
+
+    //STEP 1 - instantiate an XHR object of a new XMLHttpRequest
+    let XHR = new XMLHttpRequest();
+
+    //STEP 2 - Open the JSON file
+    //arguments - GET/POST, URL, Async (True or False)
+    XHR.open("GET", "../games.json", true);
+
+    //STEP 3 - Initiate the call (send out a call to the XHR object)
+    //you can also add a filter if you are looking for a particular document
+    XHR.send(null);
+
+    //Step 4 - Listen for ready state for be 4
+    //Creates a handler to be done when the 
+   
+    XHR.addEventListener("readystatechange", function(){
+
+         //There are different ready states that represent the stage of data transfer, 4 means done
+         //There are different server status codes that represent state of server, 200 means all is good
+        if((XHR.readyState === 4) && (XHR.status === 200)){
+
+            //convert the response text into a JSON file
+            data = JSON.parse(this.responseText);
+
+        }
+
+    });
+
+    //STEP 5 - wait until data is finished loading before injecting it into the document
+    XHR.addEventListener("load", function(){
+
+        //created a hook into our UI into back end JS
     let gameListBody = document.getElementById("gameListBody");
 
     //for each game in data.games, do this this...
     data.games.forEach(function(game){
 
-        //inject a template row inside the dataRows div tag
+        //create a new table row element called newRow
         let newRow = document.createElement("tr")
 
+        //insert HTML within the newly created element
         newRow.innerHTML = `
         <tr>
             <td class="text-center">${game.name}</td>
@@ -49,8 +60,14 @@ case "Home":
         </tr>
         `;
 
+        //append the element on to the gameListBody
         gameListBody.appendChild(newRow);
-    }, this);
+       }, this);
+
+    });
+
+
+    
 
     break;
 
