@@ -5,47 +5,52 @@
 // IIFE
 (function(){ 
 
-console.log("App Started");
-console.info(`Page Title: ${document.title}`);
+let data = {
+
+"games": [
+    {
+        "name": "Fallout 4",
+        "cost": 69.99,
+        "rating": 4.3
+    },
+    {
+        "name": "Overwatch",
+        "cost": 49.99,
+        "rating": 4.5
+    },
+    {
+        "name": "Horizon Zero Dawn",
+        "cost": 69.99,
+        "rating": 4.1
+    }
+ 
+]
+};
+
 
 switch (document.title) {
 
 case "Home":
 
-    //declare and initialize the firstHeading variable
-    //the firstHeading variable creates a reference the h1 element on the page
-    let firstHeading = document.getElementById("firstHeading");
+    //created a hook into our UI into back end JS
+    let gameListBody = document.getElementById("gameListBody");
 
-    firstHeading.style.color = "#FF00FF";
-    firstHeading.style.fontWeight = "500";
-    firstHeading.style.fontStyle = "italic";
-    firstHeading.style.opacity = "0.5";
+    //for each game in data.games, do this this...
+    data.games.forEach(function(game){
 
+        //inject a template row inside the dataRows div tag
+        let newRow = document.createElement("tr")
 
-    //THREE STEPS FOR INJECTING CONTENT ONTO page
-    //STEP 1 - Create a reference to an element (reference variable)
-    let FirstParagraph = document.getElementById("firstParagraph");
-    let SecondParagraph = document.getElementById("secondParagraph");
+        newRow.innerHTML = `
+        <tr>
+            <td class="text-center">${game.name}</td>
+            <td class="text-center">${game.cost}</td>
+            <td class="text-center">${game.rating}</td>
+        </tr>
+        `;
 
-    //STEP 2 - Create a variable that contains CONTENT (content variable)
-    let myContent = "It was a sunny day in Florida. It felt great. I love the sun.";
-    let myHTMLContent = `<h2>Second Heading</h2>
-                         <p>This is an inner paragraph to the second paragraph</p>`;
-
-    //STEP 3 - Assign the variable with your content to the textContent property of the reference variable (operation)
-    FirstParagraph.textContent = myContent;
-    SecondParagraph.innerHTML = myHTMLContent;
-
-    //Assigns the button in our index to a variable
-    let clickMeButton = document.getElementById("clickMeButton");
-
-    //adds an event listener to trigger when the clickMeButton is clicked. It will call the Click function.
-    clickMeButton.addEventListener("click", Click);
-
-    // create a Click function, which will log to the console when we click. Used as an event handler.
-    function Click() {
-        console.log("Clicked...");
-    }
+        gameListBody.appendChild(newRow);
+    }, this);
 
     break;
 
